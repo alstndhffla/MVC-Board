@@ -137,12 +137,12 @@ public class BoardController extends HttpServlet {
 				articleVO.setContent(content);
 				articleVO.setImageFileName(imageFileName);
 				boardService.modArticle(articleVO);
-				if (imageFileName != null && imageFileName.length() != 0) {
+				if (imageFileName != null && imageFileName.length() != 0) {		//파일을 첨부한 경우에만 수행
 					String originalFileName = articleMap.get("originalFileName");
-					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);
-					File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO);
+					File srcFile = new File(ARTICLE_IMAGE_REPO + "\\" + "temp" + "\\" + imageFileName);		//temp 폴더에 임시로 업로드된 파일 객체를 생성
+					File destDir = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO);		//CURR_IMAGE_REPO_PATH 의 경로 하위에 글 번호로 폴더를 생성.
 					destDir.mkdirs();
-					FileUtils.moveFileToDirectory(srcFile, destDir, true);
+					FileUtils.moveFileToDirectory(srcFile, destDir, true);		//temp 폴더의 파일을 글 번호를 이름으로 하는 폴더로 이동시킨다.
 					;
 					File oldFile = new File(ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + originalFileName);
 					oldFile.delete();

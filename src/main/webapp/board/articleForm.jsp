@@ -12,6 +12,7 @@
 <title>글쓰기창</title>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
+   //제이쿼리 이용해 이미지 파일첨부시 미리 보기 기능을 구현
    function readURL(input) {
       if (input.files && input.files[0]) {
 	      var reader = new FileReader();
@@ -31,7 +32,7 @@
 </head>
 <body>
 <h1 style="text-align:center">새글 쓰기</h1>
-  <form name="articleForm" method="post"   action="${contextPath}/board/addArticle.do"   enctype="multipart/form-data">
+  <form name="articleForm" method="post"   action="${contextPath}/board/addArticle.do"   enctype="multipart/form-data">		<!-- 새 글 등록 요청(action) 및 파일 업로드를 위한 enctype -->
     <table border="0" align="center">
      <tr>
 	   <td align="right">글제목: </td>
@@ -44,7 +45,7 @@
      <tr>
         <td align="right">이미지파일 첨부:  </td>
 	     <td> <input type="file" name="imageFileName"  onchange="readURL(this);" /></td>
-         <td><img  id="preview" src="#"   width=200 height=200/></td>
+         <td><img  id="preview" src="#"   width=200 height=200/></td>	<!-- 첨부한 이미지를 미리 보기로 표시 -->
 	 </tr>
 	 <tr>
 	    <td align="right"> </td>
