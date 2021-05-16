@@ -25,7 +25,8 @@ public class BoardService {
 		List<ArticleVO> articlesList = boardDAO.selectAllArticles();
 		return articlesList;
 	}
-
+	
+	//새 글 번호를 컨트롤러로 반환
 	public int addArticle(ArticleVO article) {
 		return boardDAO.insertNewArticle(article);
 	}

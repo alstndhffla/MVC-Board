@@ -171,13 +171,14 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 
-		return articleNO;
+		return articleNO;	//SQL문으로 새 글을 추가하고 새 글 번호를 반환
 	}
 
 	public ArticleVO selectArticle(int articleNO) {
 		ArticleVO article = new ArticleVO();
 		try {
 			conn = dataFactory.getConnection();
+			//전달받은 글 번호를 이용해 글 정보를 조회.
 			String query = "select articleNO,parentNO,title,content, NVL(imageFileName, 'null') as imageFileName, id, writeDate" + " from t_board"
 					+ " where articleNO=?";
 			System.out.println(query);

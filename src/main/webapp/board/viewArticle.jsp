@@ -101,7 +101,7 @@
       제목 
    </td>
    <td>
-    <input type=text value="${article.title }"  name="title"  id="i_title" disabled />
+    <input type=text value="${article.title }"  name="title"  id="i_title" disabled />	<!-- 글 제목을 표시 -->
    </td>   
   </tr>
   <tr>
@@ -109,17 +109,18 @@
       내용
    </td>
    <td>
-    <textarea rows="20" cols="60"  name="content"  id="i_content"  disabled />${article.content }</textarea>
+    <textarea rows="20" cols="60"  name="content"  id="i_content"  disabled />${article.content }</textarea>	<!-- 글 내용을 표시 -->
    </td>  
   </tr>
  
-<c:if test="${not empty article.imageFileName && article.imageFileName!='null' }">  
+<c:if test="${not empty article.imageFileName && article.imageFileName!='null' }">	<!-- imageFileName 값이 있으면 이미지를 표시 -->
 <tr>
     <td width="150" align="center" bgcolor="#FF9933"  rowspan="2">
       이미지
    </td>
    <td>
-     <input  type= "hidden"   name="originalFileName" value="${article.imageFileName }" />
+     <input  type= "hidden"   name="originalFileName" value="${article.imageFileName }" />	<!-- <hidden>태그에 원래 이미지 파일 이름을 저장 -->
+     <!-- FileDownloadController 서블릿에 이미지 파일 이름과 글 번호를 전송해 이미지를 <img> 태그에 표시 -->
     <img src="${contextPath}/download.do?articleNO=${article.articleNO}&imageFileName=${article.imageFileName}" id="preview"  /><br>
        
    </td>   

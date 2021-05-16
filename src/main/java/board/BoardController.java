@@ -120,8 +120,8 @@ public class BoardController extends HttpServlet {
 
 				return;
 			} else if (action.equals("/viewArticle.do")) {
-				String articleNO = request.getParameter("articleNO");
-				articleVO = boardService.viewArticle(Integer.parseInt(articleNO));
+				String articleNO = request.getParameter("articleNO");	//글 상세창을 요청할 경우 articleNO 값을 가져온다.
+				articleVO = boardService.viewArticle(Integer.parseInt(articleNO));	//articleNO에 대한 글 정보를 조회하고 article 속성으로 바인딩.
 				request.setAttribute("article", articleVO);
 				nextPage = "/board/viewArticle.jsp";
 			} else if (action.equals("/modArticle.do")) {
