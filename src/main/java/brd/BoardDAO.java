@@ -1,4 +1,4 @@
-package board;
+package brd;
 
 import java.net.URLEncoder;
 import java.sql.Connection;
@@ -62,14 +62,13 @@ public class BoardDAO {
 		   pstmt.setInt(4, pageNum);
 		   ResultSet rs =pstmt.executeQuery();
 		   while(rs.next()){
-		      int level = rs.getInt("lvl");	//각 글의 깊이(계층)를 level 속성에 저장.
-		      int articleNO = rs.getInt("articleNO");	//글 번호는 숫자형이므로 getInt()로 값을 가져옴.
+		      int level = rs.getInt("lvl");
+		      int articleNO = rs.getInt("articleNO");
 		      int parentNO = rs.getInt("parentNO");
 		      String title = rs.getString("title");
 		      String id = rs.getString("id");
 		      Date writeDate= rs.getDate("writeDate");
-		      
-		      ArticleVO article = new ArticleVO();	//글 정보를 ArticleVO 객체의 속성에 설정
+		      ArticleVO article = new ArticleVO();
 		      article.setLevel(level);
 		      article.setArticleNO(articleNO);
 		      article.setParentNO(parentNO);
@@ -87,25 +86,29 @@ public class BoardDAO {
 	  return articlesList;
     } 
 	
-	public List selectAllArticles() {
-		List articlesList = new ArrayList();
+	public List<ArticleVO> selectAllArticles() {
+		List<ArticleVO> articlesList = new ArrayList();
 		try {
 			conn = dataFactory.getConnection();
-			//오라클의 계층형 SQL문을 통해 질문과 답변을 리스트로 뽑아냄
+			
+			//오라클의 계층형 SQL문을 실행.
 			String query = "SELECT LEVEL,articleNO,parentNO,title,content,id,writeDate" + " from t_board"
 					+ " START WITH  parentNO=0" + " CONNECT BY PRIOR articleNO=parentNO"
 					+ " ORDER SIBLINGS BY articleNO DESC";
 			System.out.println(query);
+			
 			pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				int level = rs.getInt("level");
-				int articleNO = rs.getInt("articleNO");
+				int level = rs.getInt("level");	//각 글의 깊이(계층)를 level 속성에 저장.
+				int articleNO = rs.getInt("articleNO");	//글 번호는 숫자형이므로 getInt()로 값을 가져온다.
 				int parentNO = rs.getInt("parentNO");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
 				String id = rs.getString("id");
 				Date writeDate = rs.getDate("writeDate");
+				
+				//글 정보를 ArticleVO 객체의 속성에 설정.
 				ArticleVO article = new ArticleVO();
 				article.setLevel(level);
 				article.setArticleNO(articleNO);
@@ -114,6 +117,7 @@ public class BoardDAO {
 				article.setContent(content);
 				article.setId(id);
 				article.setWriteDate(writeDate);
+				
 				articlesList.add(article);
 			}
 			rs.close();
@@ -129,11 +133,11 @@ public class BoardDAO {
 	private int getNewArticleNO() {
 		try {
 			conn = dataFactory.getConnection();
-			String query = "SELECT  max(articleNO) from t_board ";	//기본 글 번호 중 가장 큰 번호를 조횐
+			String query = "SELECT  max(articleNO) from t_board ";
 			System.out.println(query);
 			pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery(query);
-			if (rs.next())		//가장 큰 번호에 1을 더한 번호를 반환
+			if (rs.next())
 				return (rs.getInt(1) + 1);
 			rs.close();
 			pstmt.close();
@@ -145,7 +149,7 @@ public class BoardDAO {
 	}
 
 	public int insertNewArticle(ArticleVO article) {
-		int articleNO = getNewArticleNO();	//새 글을 추가하기 전에 새 글에 대한 글 번호를 가져온다.
+		int articleNO = getNewArticleNO();
 		try {
 			conn = dataFactory.getConnection();
 			int parentNO = article.getParentNO();
@@ -153,7 +157,6 @@ public class BoardDAO {
 			String content = article.getContent();
 			String id = article.getId();
 			String imageFileName = article.getImageFileName();
-			//insert문을 이용해 글 정보를 추가한다.
 			String query = "INSERT INTO t_board (articleNO, parentNO, title, content, imageFileName, id)"
 					+ " VALUES (?, ? ,?, ?, ?, ?)";
 			System.out.println(query);
@@ -171,14 +174,13 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 
-		return articleNO;	//SQL문으로 새 글을 추가하고 새 글 번호를 반환
+		return articleNO;
 	}
 
 	public ArticleVO selectArticle(int articleNO) {
 		ArticleVO article = new ArticleVO();
 		try {
 			conn = dataFactory.getConnection();
-			//전달받은 글 번호를 이용해 글 정보를 조회.
 			String query = "select articleNO,parentNO,title,content, NVL(imageFileName, 'null') as imageFileName, id, writeDate" + " from t_board"
 					+ " where articleNO=?";
 			System.out.println(query);

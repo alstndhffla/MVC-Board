@@ -8,6 +8,8 @@
 
 <!-- c:set 은 변수지정시 사용하는 JSTL의 코어 태그 라이브러리이다. -->
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+
+<!-- HashMap으로 저장해서 넘어온 값들은 이름이 길어 사용하기 불편하므로 c:set 태그를 이용해 각 값들을 짧은 변수 이름으로 저장 -->
 <c:set  var="articlesList"  value="${articlesMap.articlesList}" />
 <c:set  var="totArticles"  value="${articlesMap.totArticles}" />
 <c:set  var="section"  value="${articlesMap.section}" />
@@ -28,7 +30,10 @@
 <head>
  <style>
    .no-uline {text-decoration:none;}
-   .sel-page{text-decoration:none;color:red;}
+   
+   <!-- 선택된 페이지 번호를 빨간색으로 표시. 페이징기능 -->
+   .sel-page{text-decoration:none;color:red;}	
+   
    .cls1 {text-decoration:none;}
    .cls2{text-align:center; font-size:30px;}
   </style>
@@ -82,32 +87,44 @@
 </table>
 
 <div class="cls2">
- <c:if test="${totArticles != null }" >
+ <c:if test="${totArticles != null }" >		<!-- 전체 글 수에 따라 페이징 표시를 다르게 한다. -->
       <c:choose>
-        <c:when test="${totArticles >100 }">  <!-- 글 개수가 100 초과인경우 -->
+        <c:when test="${totArticles >100 }">  <!-- 전체 글 수가 100보다 클 때 -->
 	      <c:forEach   var="page" begin="1" end="10" step="1" >
+	      
+	      	<!-- 섹션 값 2부터는 앞 섹션으로 이동할 수 있는 pre를 표시 -->
 	         <c:if test="${section >1 && page==1 }">
 	          <a class="no-uline" href="${contextPath }/board/listArticles.do?section=${section-1}&pageNum=${(section-1)*10 +1 }">&nbsp; pre </a>
 	         </c:if>
+	         
 	          <a class="no-uline" href="${contextPath }/board/listArticles.do?section=${section}&pageNum=${page}">${(section-1)*10 +page } </a>
+	         
+	         <!-- 페이지 번호 10 오른쪽에는 다음 섹션으로 이동할 수 있는 next를 표시 -->
 	         <c:if test="${page ==10 }">
 	          <a class="no-uline" href="${contextPath }/board/listArticles.do?section=${section+1}&pageNum=${section*10+1}">&nbsp; next</a>
 	         </c:if>
+	         
 	      </c:forEach>
         </c:when>
-        <c:when test="${totArticles ==100 }" >  <!--등록된 글 개수가 100개인경우  -->
+        
+        <c:when test="${totArticles ==100 }" >  <!-- 전체 글 수가 100개일 때는 첫번째 섹션의 10개 페이지만 표시하면 된다.  -->
 	      <c:forEach   var="page" begin="1" end="10" step="1" >
 	        <a class="no-uline"  href="#">${page } </a>
 	      </c:forEach>
         </c:when>
         
-        <c:when test="${totArticles< 100 }" >   <!--등록된 글 개수가 100개 미만인 경우  -->
+        <c:when test="${totArticles< 100 }" >   <!-- 전체 글 수가 100개보다 적을 때 페이징을 표시한다. -->
+	      <!-- 글 수가 100개가 되지 않으므로 표시되는 페이지는 10개가 되지 않고, 전체 글 수를 10으로 나누어 구한 몫에 1을 더한 페이지까지 표시된다. -->
 	      <c:forEach   var="page" begin="1" end="${totArticles/10 +1}" step="1" >
 	         <c:choose>
+	         
+	         <!-- 페이지 번호와 컨트롤러에서 넘어온 pageNum 이 같은 경우 페이지 번호를 빨간색으로 표시하여 현재 사용자가 보고 있는 페이지임을 알린다. -->
 	           <c:when test="${page==pageNum }">
 	            <a class="sel-page"  href="${contextPath }/board/listArticles.do?section=${section}&pageNum=${page}">${page } </a>
 	          </c:when>
+	          
 	          <c:otherwise>
+	          	<!-- 페이지 번호를 클릭하면 section 값과 pageNum 값을 컨트롤러에 전송한다. -->
 	            <a class="no-uline"  href="${contextPath }/board/listArticles.do?section=${section}&pageNum=${page}">${page } </a>
 	          </c:otherwise>
 	        </c:choose>

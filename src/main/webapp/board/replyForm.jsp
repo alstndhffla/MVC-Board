@@ -31,7 +31,9 @@
 </head>
 <body>
  <h1 style="text-align:center">답글쓰기</h1>
+  <!-- 답글 입력 후 전송 시 컨트롤러에 /board/addReply.do로 요청 -->
   <form name="frmReply" method="post"  action="${contextPath}/board/addReply.do"   enctype="multipart/form-data">
+  
     <table align="center">
     <tr>
 			<td align="right"> 글쓴이:&nbsp; </td>

@@ -1,4 +1,4 @@
-package board;
+package brd;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,7 @@ public class BoardService {
 	BoardDAO boardDAO;
 
 	public BoardService() {
-		boardDAO = new BoardDAO();	//생성자 호출 시 BoardDAO 객체 생성
+		boardDAO = new BoardDAO();	//생성자 호출 시 BoardDAO 객체를 생성.
 	}
 
 	public Map listArticles(Map<String, Integer> pagingMap) {
@@ -25,8 +25,7 @@ public class BoardService {
 		List<ArticleVO> articlesList = boardDAO.selectAllArticles();
 		return articlesList;
 	}
-	
-	//새 글 번호를 컨트롤러로 반환
+
 	public int addArticle(ArticleVO article) {
 		return boardDAO.insertNewArticle(article);
 	}

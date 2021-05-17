@@ -42,6 +42,7 @@ public class FileDownloadController extends HttpServlet {
 		String imageFileName = (String) request.getParameter("imageFileName");
 		String articleNO = request.getParameter("articleNO");
 		System.out.println("imageFileName=" + imageFileName);
+		
 		OutputStream out = response.getOutputStream();
 		String path = ARTICLE_IMAGE_REPO + "\\" + articleNO + "\\" + imageFileName;	//글 번호에 대한 파일 경로를 설정.
 		File imageFile = new File(path);

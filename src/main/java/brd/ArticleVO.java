@@ -1,4 +1,4 @@
-package board;
+package brd;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -34,7 +34,7 @@ public class ArticleVO {
 
 
 
-	//각 속성에 대한 getter/setter
+
 	public int getLevel() {
 		return level;
 	}
