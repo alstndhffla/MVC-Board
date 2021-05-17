@@ -35,6 +35,7 @@ public class BoardDAO {
 		int pageNum=(Integer)pagingMap.get("pageNum");
 		try{
 		   conn = dataFactory.getConnection();
+		   
 		   String query ="SELECT * FROM ( "
 						+ "select ROWNUM  as recNum,"+"LVL,"
 							+"articleNO,"
